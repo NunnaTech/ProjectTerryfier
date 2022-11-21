@@ -12,8 +12,8 @@ public class PlayerFreeLookState : PlayerBaseState
     public bool isSprinting;
     public float sprintingSpeedMultiplier = 6f;
     private float sprintSpeed = 2f;
-    public float staminaUseAmount = 5;
     // Stamine
+    public float staminaUseAmount = 5;
     public float maxStamina = 100;
     private float currentStamina;
     private float regenerateStaminaTime = 0.1f;
@@ -43,7 +43,9 @@ public class PlayerFreeLookState : PlayerBaseState
     }
     private void OnRun()
     {
-      RunCheck();
+        LosingStaminaCoroutine();
+        RunCheck();
+        RegenerateStamineCoroutine();
     }
 
     public void RunCheck()
@@ -55,11 +57,10 @@ public class PlayerFreeLookState : PlayerBaseState
         if (isSprinting==true)
         {
             stateMachine.FreeLookMovementSpeed = sprintingSpeedMultiplier;
-            //stateMachine.staminaSlider.UseStamina(staminaUseAmount);
         }else
         {
             stateMachine.FreeLookMovementSpeed = sprintSpeed;
-            //stateMachine.staminaSlider.UseStamina(0);
+            
         }
     }
 
@@ -79,24 +80,24 @@ public class PlayerFreeLookState : PlayerBaseState
         // Start to run
         if(isSprinting==true){
             stateMachine.Animator.SetFloat(freeLookSpeedHash, 2, animatorDampTime, deltaTime);
+        }else{
         }
-        // LosingStaminaCoroutine();
-        // RegenerateStamineCoroutine();
+        
     }
 
     private void LosingStaminaCoroutine()
     {
-        while (currentStamina > 0)
+        if (currentStamina > 0)
         {
             currentStamina -= staminaUseAmount;
             stateMachine.staminaSlider.value = currentStamina;
             new WaitForSeconds(losingStaminaTime);
         }
-        isSprinting = false;
+        
     }
     private void RegenerateStamineCoroutine()
     {
-        while (currentStamina < maxStamina)
+        if (currentStamina < maxStamina && !isSprinting)
         {
             currentStamina += regenerateAmount;
             stateMachine.staminaSlider.value = currentStamina;
