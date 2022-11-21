@@ -8,10 +8,12 @@ public class ForceReceiver : MonoBehaviour
     private CharacterController Controller;
     private float verticalVelocity;
     public Vector3 Movement => Vector3.up * verticalVelocity;
-    void Start()
-    {
-        
-    }
+    // Running
+    public bool isSprinting;
+    public float sprintingSpeedMultiplier = 1.5f;
+    private float sprintSpeed = 1;
+
+
 
     // Update is called once per frame
     void Update()
@@ -21,5 +23,10 @@ public class ForceReceiver : MonoBehaviour
        else
             verticalVelocity += Physics.gravity.y * Time.deltaTime;
 
+    }
+
+    public void RunCheck()
+    {
+        
     }
 }

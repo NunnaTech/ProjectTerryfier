@@ -544,6 +544,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller: {fileID: 2290985593645098080}
+  isSprinting: 0
+  sprintingSpeedMultiplier: 1.5
 --- !u!1 &3141192610377659404
 GameObject:
   m_ObjectHideFlags: 0

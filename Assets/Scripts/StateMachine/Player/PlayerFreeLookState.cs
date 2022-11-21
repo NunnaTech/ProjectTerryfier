@@ -24,6 +24,11 @@ public class PlayerFreeLookState : PlayerBaseState
     {
 
     }
+    private void OnRun()
+    {
+        Debug.Log("RUUUUN");
+    }
+
 
     public override void Tick(float deltaTime)
     {

@@ -14,4 +14,8 @@ public abstract class PlayerBaseState : State
     {
         stateMachine.CharacterController.Move((motion + stateMachine.forceReceiver.Movement) * deltaTime);
     }
+    
+    protected void Runnig()
+    {
+}
 }
