@@ -17,5 +17,6 @@ public abstract class PlayerBaseState : State
     
     protected void Runnig()
     {
-}
+        
+    }
 }

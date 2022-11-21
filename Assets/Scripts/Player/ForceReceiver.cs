@@ -6,12 +6,9 @@ public class ForceReceiver : MonoBehaviour
 {
     [SerializeField]
     private CharacterController Controller;
-    private float verticalVelocity;
+    public float verticalVelocity;
     public Vector3 Movement => Vector3.up * verticalVelocity;
-    // Running
-    public bool isSprinting;
-    public float sprintingSpeedMultiplier = 1.5f;
-    private float sprintSpeed = 1;
+   
 
 
 
@@ -25,8 +22,5 @@ public class ForceReceiver : MonoBehaviour
 
     }
 
-    public void RunCheck()
-    {
-        
-    }
+   
 }

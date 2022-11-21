@@ -8,8 +8,13 @@ public class PlayerFreeLookState : PlayerBaseState
 {
     private readonly int freeLookSpeedHash = Animator.StringToHash("FreeLookSpeed");
     private const float animatorDampTime = 0.05f;
+     // Running
+    public bool isSprinting;
+    public float sprintingSpeedMultiplier = 6f;
+    private float sprintSpeed = 2f;
 
     private readonly int freeLookBlendTreeHash = Animator.StringToHash("FreeLookBlend Tree");
+    
     public PlayerFreeLookState(PlayerSateMachine stateMachine) : base(stateMachine)
     {
 
@@ -18,6 +23,8 @@ public class PlayerFreeLookState : PlayerBaseState
     public override void Enter()
     {
         stateMachine.Animator.Play(freeLookBlendTreeHash);
+        stateMachine.InputReader.RunEvent += OnRun;
+
     }
 
     public override void Exit()
@@ -26,7 +33,22 @@ public class PlayerFreeLookState : PlayerBaseState
     }
     private void OnRun()
     {
-        Debug.Log("RUUUUN");
+      RunCheck();
+    }
+    
+    public void RunCheck()
+    {
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            isSprinting = !isSprinting;
+        }
+        if (isSprinting==true)
+        {
+            stateMachine.FreeLookMovementSpeed = sprintingSpeedMultiplier;
+        }else
+        {
+            stateMachine.FreeLookMovementSpeed = sprintSpeed;
+        }
     }
 
 
@@ -42,6 +64,9 @@ public class PlayerFreeLookState : PlayerBaseState
 
         stateMachine.Animator.SetFloat(freeLookSpeedHash, 1, animatorDampTime, deltaTime);
         FaceMovementDirection(movement);
+        if(isSprinting==true){
+            stateMachine.Animator.SetFloat(freeLookSpeedHash, 2, animatorDampTime, deltaTime);
+        }
     }
 
     private Vector3 CalculateMovement()
