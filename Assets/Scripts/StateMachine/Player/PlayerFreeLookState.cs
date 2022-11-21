@@ -8,10 +8,17 @@ public class PlayerFreeLookState : PlayerBaseState
 {
     private readonly int freeLookSpeedHash = Animator.StringToHash("FreeLookSpeed");
     private const float animatorDampTime = 0.05f;
-     // Running
+    // Running
     public bool isSprinting;
     public float sprintingSpeedMultiplier = 6f;
     private float sprintSpeed = 2f;
+    public float staminaUseAmount = 5;
+    // Stamine
+    public float maxStamina = 100;
+    private float currentStamina;
+    private float regenerateStaminaTime = 0.1f;
+    private float regenerateAmount = 2;
+    private float losingStaminaTime = 0.1f;
 
     private readonly int freeLookBlendTreeHash = Animator.StringToHash("FreeLookBlend Tree");
     
@@ -24,6 +31,9 @@ public class PlayerFreeLookState : PlayerBaseState
     {
         stateMachine.Animator.Play(freeLookBlendTreeHash);
         stateMachine.InputReader.RunEvent += OnRun;
+        currentStamina = maxStamina;
+        stateMachine.staminaSlider.maxValue = maxStamina;
+        stateMachine.staminaSlider.value = maxStamina;
 
     }
 
@@ -35,7 +45,7 @@ public class PlayerFreeLookState : PlayerBaseState
     {
       RunCheck();
     }
-    
+
     public void RunCheck()
     {
         if(Input.GetKeyDown(KeyCode.LeftShift))
@@ -45,9 +55,11 @@ public class PlayerFreeLookState : PlayerBaseState
         if (isSprinting==true)
         {
             stateMachine.FreeLookMovementSpeed = sprintingSpeedMultiplier;
+            //stateMachine.staminaSlider.UseStamina(staminaUseAmount);
         }else
         {
             stateMachine.FreeLookMovementSpeed = sprintSpeed;
+            //stateMachine.staminaSlider.UseStamina(0);
         }
     }
 
@@ -64,11 +76,33 @@ public class PlayerFreeLookState : PlayerBaseState
 
         stateMachine.Animator.SetFloat(freeLookSpeedHash, 1, animatorDampTime, deltaTime);
         FaceMovementDirection(movement);
+        // Start to run
         if(isSprinting==true){
             stateMachine.Animator.SetFloat(freeLookSpeedHash, 2, animatorDampTime, deltaTime);
         }
+        // LosingStaminaCoroutine();
+        // RegenerateStamineCoroutine();
     }
 
+    private void LosingStaminaCoroutine()
+    {
+        while (currentStamina > 0)
+        {
+            currentStamina -= staminaUseAmount;
+            stateMachine.staminaSlider.value = currentStamina;
+            new WaitForSeconds(losingStaminaTime);
+        }
+        isSprinting = false;
+    }
+    private void RegenerateStamineCoroutine()
+    {
+        while (currentStamina < maxStamina)
+        {
+            currentStamina += regenerateAmount;
+            stateMachine.staminaSlider.value = currentStamina;
+            new WaitForSeconds(regenerateStaminaTime);
+        }
+    }
     private Vector3 CalculateMovement()
     {
         Vector3 forward = stateMachine.MainCameraTransform.forward;
