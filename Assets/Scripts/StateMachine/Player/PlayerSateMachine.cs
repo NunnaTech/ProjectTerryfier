@@ -16,7 +16,7 @@ public class PlayerSateMachine : StateMachine
     public bool isSprinting;
     public float staminaUseAmount = 5;
     public float maxStamina = 100;
-    private float currentStamina;
+    public float currentStamina;
 
     // Stamine renegerators
     private float regenerateStaminaTime = 0.1f;

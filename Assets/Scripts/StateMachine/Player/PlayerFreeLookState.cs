@@ -6,14 +6,16 @@ using System;
 
 public class PlayerFreeLookState : PlayerBaseState
 {
+    // Animation
     private readonly int freeLookSpeedHash = Animator.StringToHash("FreeLookSpeed");
+    private readonly int freeLookBlendTreeHash = Animator.StringToHash("FreeLookBlend Tree");
     private const float animatorDampTime = 0.05f;
-    // Running
+
+    // Running Params
     public float sprintingSpeedMultiplier = 6f;
     private float sprintSpeed = 2f;
     
 
-    private readonly int freeLookBlendTreeHash = Animator.StringToHash("FreeLookBlend Tree");
     
     public PlayerFreeLookState(PlayerSateMachine stateMachine) : base(stateMachine)
     {
@@ -78,7 +80,11 @@ public class PlayerFreeLookState : PlayerBaseState
         // Start to run
         if(stateMachine.isSprinting==true){
             stateMachine.Animator.SetFloat(freeLookSpeedHash, 2, animatorDampTime, deltaTime);
-        }else{
+        }
+        // fail
+        if(stateMachine.isSprinting==true && stateMachine.currentStamina < 0.10){
+            stateMachine.SwitchState(new PlayerTiredState(stateMachine));
+
         }
         
     }
