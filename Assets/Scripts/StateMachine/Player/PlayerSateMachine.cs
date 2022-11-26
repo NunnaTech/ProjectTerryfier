@@ -73,7 +73,7 @@ public class PlayerSateMachine : StateMachine
     }
     private IEnumerator RegenerateStamineCoroutine()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         while (currentStamina < maxStamina)
         {
             currentStamina += regenerateAmount;

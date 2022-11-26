@@ -32,35 +32,25 @@ public class PlayerFreeLookState : PlayerBaseState
 
     public override void Exit()
     {
-
+        stateMachine.InputReader.RunEvent -= OnRun;
     }
-    private void OnRun()
+    private void OnRun(bool isSprinting)
     {
+        stateMachine.isSprinting = isSprinting;
         RunCheck();
     }
 
     public void RunCheck()
     {
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if(stateMachine.isSprinting==true)
         {
-            stateMachine.isSprinting = !stateMachine.isSprinting;
-            if(stateMachine.isSprinting==true)
-            {
-                stateMachine.UseStamina(stateMachine.staminaUseAmount);
-            }
-            else
-            {
-             stateMachine.UseStamina(0);
-
-            }
-        }
-        if (stateMachine.isSprinting==true)
-        {
-            stateMachine.FreeLookMovementSpeed = sprintingSpeedMultiplier;
+           stateMachine.UseStamina(stateMachine.staminaUseAmount);
+           stateMachine.FreeLookMovementSpeed = sprintingSpeedMultiplier;
         }
         else
         {
-            stateMachine.FreeLookMovementSpeed = sprintSpeed;
+           stateMachine.UseStamina(0);
+           stateMachine.FreeLookMovementSpeed = sprintSpeed;
         }
     }
 
@@ -84,7 +74,7 @@ public class PlayerFreeLookState : PlayerBaseState
         // fail
         if(stateMachine.isSprinting==true && stateMachine.currentStamina < 0.10){
             stateMachine.SwitchState(new PlayerTiredState(stateMachine));
-
+        
         }
         
     }

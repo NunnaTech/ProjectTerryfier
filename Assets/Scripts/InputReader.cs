@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
     public Vector2 MovementValue { get; set; }
-    public event Action RunEvent;
+    public event Action<bool> RunEvent;
     private Controls controls;
     public void OnMovement(InputAction.CallbackContext context)
     {
@@ -16,8 +16,7 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
 
     public void OnRun(InputAction.CallbackContext context)
     {
-        if (!context.performed) { return; }
-        RunEvent?.Invoke();
+        RunEvent?.Invoke(context.performed);
     }
 
     // Start is called before the first frame update
