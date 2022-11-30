@@ -284,7 +284,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2454656127663519953}
-  m_LocalRotation: {x: 0.07320984, y: -0.000000008580105, z: 6.2983824e-10, w: 0.99731654}
+  m_LocalRotation: {x: 0.07320984, y: 0.000000008580105, z: -6.2983824e-10, w: 0.99731654}
   m_LocalPosition: {x: 0.055000007, y: 1.867, z: -2.82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -401,7 +401,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2454656127683529641}
-  m_LocalRotation: {x: 0.055105016, y: -0.0000000021475295, z: 1.1851974e-10, w: 0.99848056}
+  m_LocalRotation: {x: 0.055105016, y: 0.0000000021475295, z: -1.1851974e-10, w: 0.99848056}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -879,7 +879,7 @@ MonoBehaviour:
   m_LayerIndex: 0
   m_ShowDebugText: 0
   m_ChildCameras:
-  - {fileID: 2454656128184630579}
+  - {fileID: 0}
   m_Instructions: []
   m_DefaultBlend:
     m_Style: 1
@@ -1597,6 +1597,10 @@ PrefabInstance:
       propertyPath: m_Direction
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6169260834628541429, guid: a4bae969442dcf245aaa56236aa7a99e, type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 2454656128184630579}
     - target: {fileID: 7080415846544030517, guid: a4bae969442dcf245aaa56236aa7a99e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.055
@@ -1617,14 +1621,6 @@ PrefabInstance:
       propertyPath: staminaSlider
       value: 
       objectReference: {fileID: 2454656127331755926}
-    - target: {fileID: 8025486031180299696, guid: a4bae969442dcf245aaa56236aa7a99e, type: 3}
-      propertyPath: <RotationDamping>k__BackingField
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8025486031180299696, guid: a4bae969442dcf245aaa56236aa7a99e, type: 3}
-      propertyPath: <FreeLookMovementSpeed>k__BackingField
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4bae969442dcf245aaa56236aa7a99e, type: 3}
 --- !u!4 &722680498956580825 stripped
@@ -1752,20 +1748,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6390538273545966128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6390538273545966129}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b944e2e7d0764f499ece282060c7fcb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FeetLeft: {fileID: 0}
-  FeetRight: {fileID: 0}
 --- !u!95 &7799617066282251648 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5633298191737398381, guid: a4bae969442dcf245aaa56236aa7a99e, type: 3}
