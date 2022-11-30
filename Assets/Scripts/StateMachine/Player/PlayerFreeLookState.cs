@@ -11,9 +11,7 @@ public class PlayerFreeLookState : PlayerBaseState
     private readonly int freeLookBlendTreeHash = Animator.StringToHash("FreeLookBlend Tree");
     private const float animatorDampTime = 0.05f;
 
-    // Running Params
-    public float sprintingSpeedMultiplier = 6f;
-    private float sprintSpeed = 2f;
+  
     
 
     
@@ -26,14 +24,17 @@ public class PlayerFreeLookState : PlayerBaseState
     {
         stateMachine.Animator.Play(freeLookBlendTreeHash);
         stateMachine.InputReader.RunEvent += OnRun;
-       
+       	
 
     }
 
     public override void Exit()
     {
         stateMachine.InputReader.RunEvent -= OnRun;
+       	stateMachine.walkSteps.Pause();
+
     }
+    
     private void OnRun(bool isSprinting)
     {
         stateMachine.isSprinting = isSprinting;
@@ -45,12 +46,14 @@ public class PlayerFreeLookState : PlayerBaseState
         if(stateMachine.isSprinting==true)
         {
            stateMachine.UseStamina(stateMachine.staminaUseAmount);
-           stateMachine.FreeLookMovementSpeed = sprintingSpeedMultiplier;
+           stateMachine.FreeLookMovementSpeed = stateMachine.sprintingSpeedMultiplier;
+			stateMachine.runShake.CameraRun();
         }
         else
         {
            stateMachine.UseStamina(0);
-           stateMachine.FreeLookMovementSpeed = sprintSpeed;
+           stateMachine.FreeLookMovementSpeed = stateMachine.sprintSpeed;
+			stateMachine.runShake.CameraWalk();
         }
     }
 
@@ -62,6 +65,7 @@ public class PlayerFreeLookState : PlayerBaseState
         if (stateMachine.InputReader.MovementValue == Vector2.zero)
         {
             stateMachine.Animator.SetFloat(freeLookSpeedHash, 0, animatorDampTime, deltaTime);
+			stateMachine.walkSteps.Play();
             return;
         }
 
@@ -70,6 +74,7 @@ public class PlayerFreeLookState : PlayerBaseState
         // Start to run
         if(stateMachine.isSprinting==true){
             stateMachine.Animator.SetFloat(freeLookSpeedHash, 2, animatorDampTime, deltaTime);
+            
         }
         // fail
         if(stateMachine.isSprinting==true && stateMachine.currentStamina < 0.10){

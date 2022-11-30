@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 public class PlayerSateMachine : StateMachine
 {
     [field: SerializeField] public InputReader InputReader {get; private set;}
@@ -11,10 +12,21 @@ public class PlayerSateMachine : StateMachine
     [field: SerializeField] public ForceReceiver forceReceiver { get; private set; }
     [field: SerializeField] public float RotationDamping { get; private set; }
     [field: SerializeField] public Slider staminaSlider;
+    [field: SerializeField] public RunShake runShake;
+    // health 
+    [field: SerializeField] public float health = 100;
+    public event EventHandler DiedPlayer;
+    [field: SerializeField] public GameObject menuGameOver;
+
+    
+	// Audio
+	public AudioSource walkSteps;
+	public AudioSource fall;
+	public AudioSource death;
 
     // Stamine data
     public bool isSprinting;
-    public float staminaUseAmount = 5;
+    [field: SerializeField] public float staminaUseAmount = 5;
     public float maxStamina = 100;
     public float currentStamina;
 
@@ -22,6 +34,11 @@ public class PlayerSateMachine : StateMachine
     private float regenerateStaminaTime = 0.1f;
     private float regenerateAmount = 2;
     private float losingStaminaTime = 0.1f;
+
+    // Running Params
+    public float sprintingSpeedMultiplier = 6f;
+    public float sprintSpeed = 2f;
+    
     // Coroutine
     private Coroutine mycCourutineLosing;
     private Coroutine mycCourutineRegeneration;
@@ -36,6 +53,22 @@ public class PlayerSateMachine : StateMachine
         currentStamina = maxStamina;
         staminaSlider.maxValue = maxStamina;
         staminaSlider.value = maxStamina;
+    }
+
+    public void takeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            StartCoroutine(DieStateSwitch());
+        }
+    }
+      private IEnumerator DieStateSwitch()
+    {
+        yield return new WaitForEndOfFrame();
+        DiedPlayer?.Invoke(this, EventArgs.Empty);
+        SwitchState(new PlayerDeathState(this));
+
     }
      public void UseStamina(float amount)
     {
@@ -73,7 +106,7 @@ public class PlayerSateMachine : StateMachine
     }
     private IEnumerator RegenerateStamineCoroutine()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(3);
         while (currentStamina < maxStamina)
         {
             currentStamina += regenerateAmount;
